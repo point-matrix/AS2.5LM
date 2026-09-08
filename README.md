@@ -1,9 +1,6 @@
 # Point Matrix: Adaptive Semantic 2.5D LiDAR Mapping
 
-[![SIH 2026](https://img.shields.io/badge/Smart_India_Hackathon-2026-orange?style=for-the-badge)](https://www.sih.gov.in/)
-[![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-Deep_Learning-red?style=for-the-badge&logo=pytorch)](https://pytorch.org/)
-[![React](https://img.shields.io/badge/React-Dashboard-61DAFB?style=for-the-badge&logo=react&logoColor=black)](https://react.dev/)
+Dashboard link -> https://point-matrix.onrender.com/
 
 **Problem Statement ID:** SIH26053  
 **Theme:** Smart Vehicles / Autonomous Navigation  
