@@ -1,4 +1,4 @@
-# Point Matrix: Adaptive Semantic 2.5D LiDAR Mapping
+# Adaptive Semantic 2.5D LiDAR Mapping
 
 Dashboard link -> https://point-matrix.onrender.com/
 
