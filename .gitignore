@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Build outputs (CUDA extension, clip exports, Space folder)
+build/
+*.so
+*.o
+*.ninja*
+
+# Data and weights: never commit KITTI data or model weights
+data/
+weights/
+*.pth
+*.ckpt
+*.bin
+*.label
+*.lgf
+*.lgf.gz
+
+# Local run outputs (the curated results/ folder is committed)
+runs/
+metrics/
+*.mp4
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

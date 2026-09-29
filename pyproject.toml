@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "as25lm"
+version = "1.0.0"
+description = "Adaptive semantic 2.5D LiDAR mapping: SalsaNext segmentation + CUDA adaptive grid"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "torch>=2.1",
+]
+
+[project.optional-dependencies]
+eval = ["pandas", "matplotlib", "tqdm", "pyyaml", "nvidia-ml-py"]
+export = ["tqdm", "pandas", "matplotlib", "huggingface_hub>=0.25"]
+dev = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"as25lm.grid" = ["csrc/*.cu", "csrc/*.cpp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

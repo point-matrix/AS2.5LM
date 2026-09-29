@@ -1,0 +1,233 @@
+{
+  "run": {
+    "gpu": "Tesla T4",
+    "frames": 4071,
+    "first_frame": "000000",
+    "last_frame": "004070",
+    "fp16": true,
+    "knn": true
+  },
+  "latency_ms": {
+    "upload": {
+      "median_ms": 0.61,
+      "p95_ms": 0.69,
+      "p99_ms": 0.75,
+      "max_ms": 0.98,
+      "mean_ms": 0.61
+    },
+    "salsa_project": {
+      "median_ms": 1.26,
+      "p95_ms": 1.86,
+      "p99_ms": 2.15,
+      "max_ms": 3.35,
+      "mean_ms": 1.33
+    },
+    "salsa_model": {
+      "median_ms": 20.99,
+      "p95_ms": 21.29,
+      "p99_ms": 21.41,
+      "max_ms": 24.15,
+      "mean_ms": 20.99
+    },
+    "salsa_post": {
+      "median_ms": 3.58,
+      "p95_ms": 3.81,
+      "p99_ms": 3.93,
+      "max_ms": 4.59,
+      "mean_ms": 3.58
+    },
+    "salsanext_total": {
+      "median_ms": 25.86,
+      "p95_ms": 26.53,
+      "p99_ms": 27.0,
+      "max_ms": 29.58,
+      "mean_ms": 25.9
+    },
+    "grid_gpu": {
+      "median_ms": 3.09,
+      "p95_ms": 3.47,
+      "p99_ms": 4.81,
+      "max_ms": 5.23,
+      "mean_ms": 3.13
+    },
+    "grid_to_cpu": {
+      "median_ms": 1.54,
+      "p95_ms": 1.94,
+      "p99_ms": 2.07,
+      "max_ms": 5.19,
+      "mean_ms": 1.51
+    },
+    "grid_engine_total": {
+      "median_ms": 4.65,
+      "p95_ms": 5.37,
+      "p99_ms": 6.66,
+      "max_ms": 9.76,
+      "mean_ms": 4.64
+    },
+    "end_to_end": {
+      "median_ms": 31.12,
+      "p95_ms": 32.19,
+      "p99_ms": 33.36,
+      "max_ms": 36.35,
+      "mean_ms": 31.15
+    }
+  },
+  "accuracy": {
+    "frames_evaluated": 4071,
+    "active": "KNN, FP16",
+    "variants": {
+      "pixel lookup, FP32": {
+        "miou": 0.5580467170299537,
+        "overall_accuracy": 0.8791238069534302,
+        "classes_present": 19
+      },
+      "KNN, FP32": {
+        "miou": 0.5899348193269915,
+        "overall_accuracy": 0.8929963111877441,
+        "classes_present": 19
+      },
+      "KNN, FP16": {
+        "miou": 0.589918495974636,
+        "overall_accuracy": 0.8929881453514099,
+        "classes_present": 19
+      }
+    },
+    "per_class_iou": {
+      "car": 0.9165014166358527,
+      "bicycle": 0.4428381372053264,
+      "motorcycle": 0.44434342269235033,
+      "truck": 0.7863055760873027,
+      "other-vehicle": 0.42869237679854466,
+      "person": 0.6863743161857851,
+      "bicyclist": 0.7727805325611499,
+      "motorcyclist": 0.0,
+      "road": 0.9425470878762165,
+      "parking": 0.4200610326989619,
+      "sidewalk": 0.8008969370779703,
+      "other-ground": 0.04087727223073494,
+      "building": 0.859731259944055,
+      "fence": 0.509371650827012,
+      "vegetation": 0.8289519885171601,
+      "trunk": 0.6313572385816938,
+      "terrain": 0.6502297135574583,
+      "pole": 0.5774537250970156,
+      "traffic-sign": 0.4691377389434932
+    },
+    "by_distance": {
+      "0-10 m": {
+        "accuracy": 0.9031776785850525,
+        "miou": 0.6083889664034574,
+        "classes_present": 19,
+        "points": 295888792
+      },
+      "10-30 m": {
+        "accuracy": 0.8818816542625427,
+        "miou": 0.5601044632970177,
+        "classes_present": 19,
+        "points": 158419292
+      },
+      "30-60 m": {
+        "accuracy": 0.8372161984443665,
+        "miou": 0.38342427932052564,
+        "classes_present": 19,
+        "points": 22373641
+      },
+      "60+ m": {
+        "accuracy": 0.7921919226646423,
+        "miou": 0.18451173054605963,
+        "classes_present": 12,
+        "points": 75998
+      }
+    }
+  },
+  "grid_accuracy": {
+    "by_cell": 0.8695095609077893,
+    "by_area": 0.8394932110222081,
+    "cells": 166810520,
+    "by_size": {
+      "5 cm": 0.891812643876553,
+      "10 cm": 0.7204379529164677,
+      "20 cm": 0.8348774547577099,
+      "40 cm": 0.8415426729624518
+    }
+  },
+  "safety": {
+    "threshold": 0.5,
+    "missed_vehicles_people": 0.0046713828944253,
+    "missed_all_obstacles": 0.0034346603407216115,
+    "false_alarm_road_parking": 0.02735761838631633,
+    "obs": 112059989,
+    "obs_missed": 384888,
+    "dyn": 34987284,
+    "dyn_missed": 163439,
+    "drv": 93911318,
+    "drv_blocked": 2569190
+  },
+  "swap": {
+    "peak_vram_allocated_mb": 214.94775390625,
+    "peak_vram_reserved_mb": 452.0,
+    "cuda_context_mb": 130.875,
+    "device_peak_mb": 582.875,
+    "gpu_memory_total_mb": 14911.6875,
+    "idle_w": 25.72789473684211,
+    "mean_active_w": 57.831951656708306,
+    "peak_w": 90.864,
+    "power_limit_w": 70.0,
+    "energy_per_frame_j": 1.8016802973209571,
+    "frames_per_joule": 0.5550374289417324
+  },
+  "throughput": {
+    "frames": 4071,
+    "points": 499079562,
+    "seconds": 126.82678485298572,
+    "points_per_s": 3935127.446292358,
+    "frames_per_s": 32.098897758221945,
+    "grid_engine_points_per_s": 26429686.96776804
+  },
+  "real_time": {
+    "pct_within_100ms": 1.0,
+    "pct_grid_within_30ms": 1.0,
+    "e2e_p99_ms": 33.36197189989889,
+    "e2e_max_ms": 36.3460280000254,
+    "grid_p99_ms": 6.6584517000137575,
+    "grid_max_ms": 9.757269999909113,
+    "slowest_frame": "000710",
+    "e2e_std_ms": 0.6477649901062492,
+    "grid_std_ms": 0.527192976955942,
+    "vram_first_mb": 53.55322265625,
+    "vram_last_mb": 52.14306640625,
+    "vram_max_mb": 55.3046875
+  },
+  "records": {
+    "highest_accuracy": {
+      "frame": "003544",
+      "accuracy": 0.9742211699485779
+    },
+    "highest_car_iou": {
+      "frame": "001533",
+      "iou": 0.9882486341614266,
+      "car_points": 9601
+    },
+    "highest_person_iou": {
+      "frame": "002101",
+      "iou": 1.0,
+      "person_points": 81
+    },
+    "fastest": {
+      "frame": "002349",
+      "end_to_end_ms": 28.966977999971277,
+      "salsanext_ms": 25.145416999976078,
+      "grid_engine_ms": 3.3503330000712594
+    },
+    "stress_test": {
+      "frame": "003689",
+      "source": "ground truth",
+      "car_points": 34611,
+      "pedestrian_points": 8,
+      "total_points": 126712,
+      "end_to_end_ms": 30.28138200011199,
+      "salsanext_ms": 26.0600889998841,
+      "grid_engine_ms": 3.6133640001025924
+    }
+  }
+}
