@@ -28,20 +28,20 @@ Details, charts and per-frame data: [`results/`](results/README.md).
 ## Pipeline
 
 ```mermaid
-flowchart TD
+flowchart LR
     classDef default fill:#111111,stroke:#FF6600,stroke-width:2px,color:#FFFFFF;
     style SEG fill:#000000,stroke:#FF6600,stroke-width:2px,color:#FF6600,stroke-dasharray: 5 5;
     style GRID fill:#000000,stroke:#FF6600,stroke-width:2px,color:#FF6600,stroke-dasharray: 5 5;
 
-    A["Raw LiDAR scan<br/>KITTI .bin, ~123k points"] --> B
+    A["Raw LiDAR scan<br/>KITTI .bin, ~123k points"] --> SEG
 
     subgraph SEG["Semantic segmentation (PyTorch)"]
-        direction LR
+        direction TB
         B["Range-image projection<br/>64 x 2048, nearest point per pixel"] --> C["SalsaNext, FP16<br/>20-class probabilities"]
         C --> D["KNN post-processing<br/>class + confidence per point"]
     end
 
-    D --> E
+    SEG --> GRID
 
     subgraph GRID["Grid Engine (C++/CUDA)"]
         direction TB
@@ -50,8 +50,8 @@ flowchart TD
         G --> H["Elevation, roughness,<br/>traversability per cell"]
     end
 
-    H --> I["LGF1 frames<br/>points + ~52k cells"]
-    H --> K["Metrics<br/>summary.json, charts"]
+    GRID --> I["LGF1 frames<br/>points + ~52k cells"]
+    GRID --> K["Metrics<br/>summary.json, charts"]
     I --> J["Dashboard (React)<br/>2D / 3D views, layers, drivable area"]
 ```
 
