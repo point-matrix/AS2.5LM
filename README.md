@@ -20,7 +20,7 @@ Details, charts and per-frame data: [`results/`](results/README.md).
 | Real-time margin | 100% of frames under 100 ms (one scan of a 10 Hz LiDAR) |
 | Segmentation | **mIoU 59.0%**, 89.3% of points correct (FP16 = FP32) |
 | Obstacle safety | 0.47% of vehicle / pedestrian points shown as passable |
-| Memory and power | ~583 MB GPU memory, 1.8 J per frame |
+| Memory and power | ~583 MB Edge GPU memory (Jetson/Xavier compatible), 1.8 J per frame |
 | CUDA vs reference | Bit-identical grids (checked on every run) |
 
 ![Latency per frame across the sequence](results/figures/latency_over_sequence.png)
@@ -28,10 +28,15 @@ Details, charts and per-frame data: [`results/`](results/README.md).
 ## Pipeline
 
 ```mermaid
-flowchart LR
+flowchart TD
+    classDef default fill:#111111,stroke:#FF6600,stroke-width:2px,color:#FFFFFF;
+    style SEG fill:#000000,stroke:#FF6600,stroke-width:2px,color:#FF6600,stroke-dasharray: 5 5;
+    style GRID fill:#000000,stroke:#FF6600,stroke-width:2px,color:#FF6600,stroke-dasharray: 5 5;
+
     A["Raw LiDAR scan<br/>KITTI .bin, ~123k points"] --> B
 
     subgraph SEG["Semantic segmentation (PyTorch)"]
+        direction LR
         B["Range-image projection<br/>64 x 2048, nearest point per pixel"] --> C["SalsaNext, FP16<br/>20-class probabilities"]
         C --> D["KNN post-processing<br/>class + confidence per point"]
     end
@@ -39,6 +44,7 @@ flowchart LR
     D --> E
 
     subgraph GRID["Grid Engine (C++/CUDA)"]
+        direction TB
         E["40 cm tiles, cell size by distance<br/>5 / 10 / 20 / 40 cm"] --> F["Per-cell statistics<br/>heights, variance, class vote"]
         F --> G["Split obstacle cells<br/>merge flat ground beyond 10 m"]
         G --> H["Elevation, roughness,<br/>traversability per cell"]
@@ -53,6 +59,9 @@ How the frames reach the dashboard:
 
 ```mermaid
 flowchart LR
+    classDef default fill:#111111,stroke:#FF6600,stroke-width:2px,color:#FFFFFF;
+    style OFF fill:#000000,stroke:#FF6600,stroke-width:2px,color:#FF6600,stroke-dasharray: 5 5;
+
     subgraph OFF["Offline (Kaggle, Tesla T4)"]
         S1["Sequence 08 scans"] --> P1["export_clip.py<br/>frames 001500-002499"]
     end
@@ -99,7 +108,7 @@ docs/                architecture, algorithm, metrics, format, deployment
 
 ## Quick start
 
-Requirements: Python 3.10+, PyTorch 2.1+. The CUDA Grid Engine needs an NVIDIA GPU and the
+Requirements: Python 3.10+, PyTorch 2.1+. The CUDA Grid Engine needs an NVIDIA Server or Edge GPU and the
 CUDA toolkit (`nvcc`); without them use `--engine numpy` (same output, slower).
 
 ```bash
