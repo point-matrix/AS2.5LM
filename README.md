@@ -20,7 +20,7 @@ Details, charts and per-frame data: [`results/`](results/README.md).
 | Real-time margin | 100% of frames under 100 ms (one scan of a 10 Hz LiDAR) |
 | Segmentation | **mIoU 59.0%**, 89.3% of points correct (FP16 = FP32) |
 | Obstacle safety | 0.47% of vehicle / pedestrian points shown as passable |
-| Memory and power | ~583 MB Edge GPU memory (Jetson/Xavier compatible), 1.8 J per frame |
+| Memory and power | ~583 MB Edge GPU memory, 1.8 J per frame |
 | CUDA vs reference | Bit-identical grids (checked on every run) |
 
 ![Latency per frame across the sequence](results/figures/latency_over_sequence.png)
