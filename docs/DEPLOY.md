@@ -3,8 +3,8 @@
 Three parts:
 
 1. **Clip data:** frames 001500–002499 exported as LGF1 frames and uploaded to a Hugging Face **dataset**.
-2. **Live API:** a Hugging Face **ZeroGPU Space** that runs the pipeline on one uploaded `.bin`.
-3. **Dashboard:** React on Vercel, reading both with `dashboard/decodeFrame.ts`.
+2. **Live API:** a Hugging Face **ZeroGPU Space** that runs the pipeline on one uploaded scan (`.bin`, or `.npy` raw / labelled).
+3. **Dashboard:** React on Vercel (teammate's `dashboard/` app), reading both in the browser.
 
 ## 1. Export the clip
 
@@ -37,11 +37,16 @@ python scripts/build_space.py --weights weights/salsanext_weights.pth --out buil
    HfApi(token="...").upload_folder(folder_path="build/space", repo_id="USER/SPACE", repo_type="space")
    ```
 4. After the build, test with any KITTI `.bin` on the Space page.
+5. To update the Space later, rebuild with `python scripts/build_space.py` and upload `build/space/` again
+   (keep the existing `sdk_version:` line in its `README.md`).
 
 Notes:
 - The Space runs SalsaNext on the GPU and the NumPy Grid Engine on the CPU; the cells are identical to the
   CUDA engine's. Response time is ~0.5–2 s; the first call after idle is slower.
 - The summary includes `gpu_wait_ms` (ZeroGPU hand-over) and `server_total_ms`.
+- ZeroGPU quota: visitors who are not logged in to Hugging Face get a small daily allowance per
+  connection. Each call requests `GPU_SECONDS` (default 10) of it. When it runs out, the Space runs
+  SalsaNext on CPU instead (slower) and adds `gpu_fallback` to the summary.
 - The benchmark sentence shown in the summary can be changed with the `BENCHMARK_NOTE` environment variable.
 
 ## 3. Dashboard
@@ -54,4 +59,7 @@ npm install @gradio/client
 - Clip: `loadManifest(MANIFEST_URL)`, then `loadFrame(frameUrl(m, i, 'lite'))` while playing and
   `'full'` when paused; bookmarks are in `manifest.bookmarks`.
 - Live: call `/ping` on page load (wakes the Space), `/infer` on upload.
+- The React app already does this in `dashboard/src/hfSpace.js`, configured by `VITE_HF_SPACE` and
+  `VITE_FRAME_MANIFEST_URL` in `dashboard/.env.production`. On Vercel: import the repo; `vercel.json`
+  sets the build; no extra environment variables are needed.
 - Format and rendering notes: [FORMAT.md](FORMAT.md).
