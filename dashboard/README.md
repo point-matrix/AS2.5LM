@@ -1,4 +1,5 @@
 # Dashboard helpers
+> **Note:** The full React frontend application for this project is hosted in a separate repository: [**point-matrix/connect**](https://github.com/point-matrix/connect). This folder only contains the core decoding and drivability logic used by that frontend.
 
 TypeScript for the React dashboard. No dependencies.
 
