@@ -11,6 +11,8 @@ from . import config as C
 LATENCY_COLUMNS = ["upload", "salsa_project", "salsa_model", "salsa_post", "salsanext_total",
                    "grid_gpu", "grid_cpu", "grid_to_cpu", "grid_engine_total", "end_to_end"]
 BLUE, ORANGE, GREY = "#2a78d6", "#eb6834", "#6b7075"
+# Classes left out of the per-class and confusion charts. They still count in mIoU and summary.json.
+CHART_HIDDEN_CLASSES = ("motorcyclist",)
 
 
 def to_jsonable(o):
@@ -132,13 +134,14 @@ def plot_latency_histogram(df, path):
 def plot_confusion(cm, path, title):
     import matplotlib.pyplot as plt
     cm = np.asarray(cm, np.float64)[1:, 1:]
-    rows = cm.sum(1) > 0
-    cm_n = cm[rows] / cm[rows].sum(1, keepdims=True)
     names = [C.LABEL_NAMES[c] for c in range(1, C.N_CLASSES)]
+    keep = np.array([n not in CHART_HIDDEN_CLASSES for n in names])
+    rows = (cm.sum(1) > 0) & keep
+    cm_n = (cm / np.maximum(cm.sum(1, keepdims=True), 1))[rows][:, keep]   # % of each full ground-truth row
     fig, ax = plt.subplots(figsize=(11, 9))
     im = ax.imshow(cm_n, cmap="Blues", vmin=0, vmax=1)
-    ax.set_xticks(range(len(names)), names, rotation=60, ha="right", fontsize=9)
-    ax.set_yticks(range(int(rows.sum())), [n for n, p in zip(names, rows) if p], fontsize=9)
+    ax.set_xticks(range(int(keep.sum())), [n for n, k in zip(names, keep) if k], rotation=60, ha="right", fontsize=9)
+    ax.set_yticks(range(int(rows.sum())), [n for n, r in zip(names, rows) if r], fontsize=9)
     for i in range(cm_n.shape[0]):
         for j in range(cm_n.shape[1]):
             if cm_n[i, j] >= 0.01:
@@ -156,7 +159,8 @@ def plot_confusion(cm, path, title):
 def plot_per_class_iou(summary, path):
     """Horizontal bars, sorted, one colour (a single measure)."""
     import matplotlib.pyplot as plt
-    iou = {k: v for k, v in summary["accuracy"]["per_class_iou"].items() if v is not None}
+    iou = {k: v for k, v in summary["accuracy"]["per_class_iou"].items()
+           if v is not None and k not in CHART_HIDDEN_CLASSES}
     items = sorted(iou.items(), key=lambda kv: kv[1])
     fig, ax = plt.subplots(figsize=(8, 6.2))
     y = np.arange(len(items))
@@ -167,7 +171,8 @@ def plot_per_class_iou(summary, path):
     active = summary["accuracy"]["active"]
     miou = summary["accuracy"]["variants"][active]["miou"]
     ax.axvline(miou * 100, color=GREY, ls="--", lw=1)
-    ax.text(miou * 100 + 1, len(items) - 0.4, f"mIoU {miou * 100:.1f}", color=GREY, fontsize=9, va="center")
+    ax.text(miou * 100 + 1, len(items) - 0.4, f"mIoU {miou * 100:.1f} (all classes)", color=GREY, fontsize=9,
+            va="center")
     ax.set_xlim(0, 105)
     ax.set_xlabel("IoU (%)")
     frames = summary["accuracy"]["frames_evaluated"]
