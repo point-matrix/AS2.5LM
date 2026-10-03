@@ -56,12 +56,12 @@ above the limit can appear in instantaneous readings, so the mean is the figure 
 | **KNN, FP16 (used)** | **59.0%** | **89.3%** |
 
 KNN post-processing adds 3.2 mIoU points; FP16 costs no accuracy. All 19 classes are present
-in the sequence, so the mIoU averages all of them.
+in the sequence, so the mIoU averages all of them (the chart shows 18; `summary.json` lists every class).
 
 ![Per-class IoU](figures/per_class_iou.png)
 
-Weakest classes: motorcyclist (0.0%), other-ground (4.1%), parking (42.0%) and other-vehicle (42.9%);
-the confusion matrix shows motorcyclists labelled as motorcycles or persons, and parking as sidewalk.
+Strongest classes: road (94.3%), car (91.7%), building (86.0%). Weakest: other-ground (4.1%),
+parking (42.0%) and other-vehicle (42.9%); parking is often labelled as sidewalk.
 
 | Distance from sensor | Accuracy | mIoU | Points |
 |---|---|---|---|
@@ -71,8 +71,6 @@ the confusion matrix shows motorcyclists labelled as motorcycles or persons, and
 | 60 m + | 79.2% | 18.5% (12 classes present) | 0.08 M |
 
 ![Accuracy by distance](figures/accuracy_by_distance.png)
-
-![Confusion matrix](figures/confusion_matrix.png)
 
 ## The grid
 
@@ -109,4 +107,5 @@ python scripts/report.py    --results runs/seq08
 ```
 
 `python scripts/report.py --results results` redraws the charts in this folder from `summary.json`
-and `frame_metrics.csv`.
+and `frame_metrics.csv`. The confusion matrix needs the run's `confusion.npy`, so it is drawn only
+when `report.py` runs on the full run folder.
