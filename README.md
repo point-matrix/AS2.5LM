@@ -140,7 +140,7 @@ Export the dashboard clip and build the live Space: [docs/DEPLOY.md](docs/DEPLOY
 
 ## Demo
 - **Frontend Repository:** [point-matrix/connect](https://github.com/point-matrix/connect)
-- Dashboard: given in ppt(not shown here for safety purposes)
+- Dashboard: link given in ppt
 - Clip data: https://huggingface.co/datasets/ranbyDipz/sih-lidar-clip
 
 ## Acknowledgements
